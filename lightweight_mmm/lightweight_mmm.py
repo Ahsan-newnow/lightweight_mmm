@@ -372,6 +372,8 @@ class LightweightMMM:
         transform_function=self._model_transform_function,
         weekday_seasonality=weekday_seasonality,
         custom_priors=custom_priors)
+    
+    #['ad_effect_retention_rate', 'coef_extra_features', 'coef_media', 'coef_trend', 'expo_trend', 'exponent', 'extra_features_effect', 'gamma_seasonality', 'intercept', 'media_transformed', 'mu', 'peak_effect_delay', 'sigma'])
 
     self.custom_priors = custom_priors
     if media_names is not None:
@@ -634,6 +636,10 @@ class LightweightMMM:
     media_contribution = jnp.einsum(einsum_str, self.trace["media_transformed"],
                                     jnp.squeeze(self.trace["coef_media"]))
 
+    print("media contribution, media_transformed", self.trace["media_transformed"].shape, self.trace["coef_media"].shape)
+    print("media contribution, extra features", self.trace["coef_extra_features"].shape)
+    #print("media contribution, extra features", self.trace["extra_feature_effect"].shape)
+    
     # aggregate posterior_pred across time:
     sum_scaled_prediction = jnp.sum(posterior_pred, axis=1)
     # aggregate unscaled_posterior_pred across time:
